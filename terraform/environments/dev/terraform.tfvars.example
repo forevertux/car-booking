@@ -1,0 +1,77 @@
+# Example Terraform Variables for Development Environment
+# Copy this file to terraform.tfvars and customize the values
+
+################################################################################
+# General Configuration
+################################################################################
+
+project_name = "car-booking"
+environment  = "dev"
+aws_region   = "eu-west-1"
+
+# Replace with your actual domain name
+domain_name = "example.com"
+
+################################################################################
+# EKS Configuration
+################################################################################
+
+cluster_version = "1.28"
+
+# Network Access
+cluster_endpoint_private_access      = true
+cluster_endpoint_public_access       = true
+cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
+
+# Node Group Configuration (Cost Optimized)
+node_group_capacity_type  = "SPOT"
+node_group_instance_types = ["t3.small", "t3.medium"]
+node_group_desired_size   = 2
+node_group_max_size       = 4
+node_group_min_size       = 1
+
+################################################################################
+# ECR Configuration
+################################################################################
+
+ecr_image_tag_mutability = "MUTABLE"
+ecr_scan_on_push         = true
+ecr_encryption_type      = "AES256"
+
+################################################################################
+# Route53 Configuration
+################################################################################
+
+route53_create_health_check = false
+
+################################################################################
+# Helm Charts Configuration
+################################################################################
+
+aws_load_balancer_controller_chart_version = "1.6.2"
+
+# External DNS (optional)
+install_external_dns      = false
+external_dns_chart_version = "1.13.1"
+
+# ArgoCD
+install_argocd        = true
+argocd_chart_version  = "5.46.8"
+argocd_admin_password = "SecurePassword123!" # Change this!
+
+# Monitoring (optional for dev)
+install_monitoring       = false
+prometheus_chart_version = "25.8.0"
+grafana_chart_version    = "7.0.8"
+
+################################################################################
+# Additional Tags
+################################################################################
+
+additional_tags = {
+  Owner       = "DevOps Team"
+  CostCenter  = "Engineering"
+  Repository  = "car-booking"
+  Purpose     = "Portfolio Demo"
+  Environment = "Development"
+}

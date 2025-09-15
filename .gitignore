@@ -1,0 +1,262 @@
+# Car Booking System - Git Ignore File
+
+################################################################################
+# Terraform
+################################################################################
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which are likely to contain sensitive data
+*.tfvars
+*.tfvars.json
+
+# Ignore override files as they are usually used to override resources locally
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include override files you do wish to add to version control using negated pattern
+# !example_override.tf
+
+# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
+tfplan*
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+################################################################################
+# Kubernetes
+################################################################################
+
+# Kubeconfig files
+kubeconfig*
+*.kubeconfig
+
+# Helm
+charts/*/charts/
+charts/*/requirements.lock
+charts/*/Chart.lock
+
+################################################################################
+# AWS
+################################################################################
+
+# AWS credentials
+.aws/
+*.pem
+*.key
+
+################################################################################
+# Node.js
+################################################################################
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+.env.local
+.env.production
+
+# parcel-bundler cache
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+################################################################################
+# React
+################################################################################
+
+# Production builds
+build/
+dist/
+
+# Runtime data
+.cache/
+
+################################################################################
+# Docker
+################################################################################
+
+# Docker files
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+################################################################################
+# IDEs and Editors
+################################################################################
+
+# Visual Studio Code
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+################################################################################
+# Operating System
+################################################################################
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+################################################################################
+# Logs
+################################################################################
+
+# General logs
+*.log
+logs/
+
+# AWS CloudWatch logs
+cloudwatch-logs/
+
+################################################################################
+# Temporary Files
+################################################################################
+
+# Temporary directories
+tmp/
+temp/
+.tmp/
+
+# Backup files
+*.bak
+*.backup
+
+################################################################################
+# Security
+################################################################################
+
+# Private keys
+*.pem
+*.key
+*.crt
+*.csr
+
+# Secrets
+secrets/
+*secret*
+*password*
+*credential*
+
+# SSL certificates
+ssl/
+
+################################################################################
+# Database
+################################################################################
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+################################################################################
+# Monitoring
+################################################################################
+
+# Prometheus data
+prometheus-data/
+
+# Grafana data
+grafana-data/
+
+################################################################################
+# ArgoCD
+################################################################################
+
+# ArgoCD repositories
+argocd-repos/
