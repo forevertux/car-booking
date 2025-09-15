@@ -165,13 +165,6 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 5. **Deploy** → ArgoCD syncs applications automatically
 6. **Monitor** → Built-in Kubernetes monitoring
 
-## 📝 Documentation
-
-- [Infrastructure Setup](docs/infrastructure.md)
-- [Application Deployment](docs/deployment.md)
-- [Monitoring Guide](docs/monitoring.md)
-- [Troubleshooting](docs/troubleshooting.md)
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -182,12 +175,11 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License
 
 ## 🔗 Links
 
-- **Live Demo**: Coming soon
-- **Documentation**: [docs/](docs/)
+- **Repository**: [GitHub](https://github.com/forevertux/car-booking)
 - **Issues**: [GitHub Issues](https://github.com/forevertux/car-booking/issues)
 
 ---
