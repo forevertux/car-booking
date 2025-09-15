@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  # Database configuration (will be overridden per environment)
+  DB_HOST: "mysql-service"
+  DB_PORT: "3306"
+  DB_NAME: "car_booking"
+
+  # Redis configuration
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+
+  # Service URLs
+  USER_SERVICE_URL: "http://user-service:3001"
+  BOOKING_SERVICE_URL: "http://booking-service:3002"
+  NOTIFICATION_SERVICE_URL: "http://notification-service:3003"
+  MAINTENANCE_SERVICE_URL: "http://maintenance-service:3004"
+  ISSUES_SERVICE_URL: "http://issues-service:3005"
+
+  # Application settings
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+
+  # Frontend configuration
+  REACT_APP_API_URL: "/api"
+  REACT_APP_APP_NAME: "Church Van Booking"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    server {
+        listen 8080;
+        server_name localhost;
+        root /usr/share/nginx/html;
+        index index.html;
+
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+        # Health check endpoint
+        location /health {
+            access_log off;
+            return 200 '{"status":"healthy","service":"frontend"}\n';
+            add_header Content-Type application/json;
+        }
+
+        # Handle client-side routing
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+
+        # Deny access to sensitive files
+        location ~ /\. {
+            deny all;
+        }
+
+        error_page 404 /index.html;
+        error_page 500 502 503 504 /index.html;
+    }

@@ -1,0 +1,98 @@
+# Development Environment Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: car-booking-dev
+
+# Base configuration
+resources:
+  - ../../base
+
+# Namespace override
+namespace: car-booking-dev
+
+# Environment-specific labels
+commonLabels:
+  environment: development
+  tier: dev
+
+# Environment-specific annotations
+commonAnnotations:
+  environment: development
+  deploy.time: "2024-01-01T00:00:00Z"
+
+# Name suffix for development
+nameSuffix: -dev
+
+# Patches for development environment
+patches:
+  # Reduce replicas for cost optimization in dev
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+
+  # Add development-specific annotations
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+    patch: |-
+      - op: add
+        path: /spec/template/metadata/annotations
+        value:
+          cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+
+# ConfigMap generator for dev-specific config
+configMapGenerator:
+  - name: dev-config
+    literals:
+      - ENV=development
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - ENABLE_METRICS=true
+      - DB_HOST=mysql-dev.car-booking-dev.svc.cluster.local
+      - REDIS_HOST=redis-dev.car-booking-dev.svc.cluster.local
+
+# Secret generator for dev (using placeholder values)
+secretGenerator:
+  - name: dev-secrets
+    literals:
+      - DB_PASSWORD=dev-password-123
+      - JWT_SECRET=dev-jwt-secret-key
+      - API_KEY=dev-api-key
+
+# Resource transformations
+replicas:
+  - name: user-service
+    count: 1
+  - name: booking-service
+    count: 1
+  - name: notification-service
+    count: 1
+  - name: maintenance-service
+    count: 1
+  - name: issues-service
+    count: 1
+  - name: frontend
+    count: 1
+
+# Images for development (using latest tag)
+images:
+  - name: user-service
+    newTag: dev-latest
+  - name: booking-service
+    newTag: dev-latest
+  - name: notification-service
+    newTag: dev-latest
+  - name: maintenance-service
+    newTag: dev-latest
+  - name: issues-service
+    newTag: dev-latest
+  - name: frontend
+    newTag: dev-latest

@@ -1,0 +1,21 @@
+{
+  "name": "notification-service",
+  "version": "1.0.0",
+  "description": "Microservice pentru notificări SMS",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx serverless offline --httpPort 3002",
+    "deploy": "npx serverless deploy"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.864.0",
+    "express": "^4.18.3",
+    "nodemailer": "^7.0.5",
+    "serverless-http": "^3.2.0",
+    "twilio": "^4.23.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.3"
+  }
+}

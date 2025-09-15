@@ -1,0 +1,60 @@
+# Base Kustomization for Car Booking System
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: car-booking-base
+
+# Namespace for all resources
+namespace: car-booking
+
+# Resources to include
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secrets.yaml
+  - user-service.yaml
+  - booking-service.yaml
+  - notification-service.yaml
+  - maintenance-service.yaml
+  - issues-service.yaml
+  - frontend.yaml
+  - ingress.yaml
+
+# Common labels applied to all resources
+commonLabels:
+  app.kubernetes.io/name: car-booking
+  app.kubernetes.io/part-of: car-booking-system
+  app.kubernetes.io/managed-by: kustomize
+
+# Common annotations
+commonAnnotations:
+  app.kubernetes.io/version: "1.0.0"
+
+# Image transformations
+images:
+  - name: user-service
+    newName: REGISTRY_ID.dkr.ecr.REGION.amazonaws.com/car-booking/user-service
+    newTag: latest
+  - name: booking-service
+    newName: REGISTRY_ID.dkr.ecr.REGION.amazonaws.com/car-booking/booking-service
+    newTag: latest
+  - name: notification-service
+    newName: REGISTRY_ID.dkr.ecr.REGION.amazonaws.com/car-booking/notification-service
+    newTag: latest
+  - name: maintenance-service
+    newName: REGISTRY_ID.dkr.ecr.REGION.amazonaws.com/car-booking/maintenance-service
+    newTag: latest
+  - name: issues-service
+    newName: REGISTRY_ID.dkr.ecr.REGION.amazonaws.com/car-booking/issues-service
+    newTag: latest
+  - name: frontend
+    newName: REGISTRY_ID.dkr.ecr.REGION.amazonaws.com/car-booking/frontend
+    newTag: latest
+
+# Resource name prefixes
+namePrefix: car-booking-
+
+# Generate ConfigMap and Secret name suffixes
+generatorOptions:
+  disableNameSuffixHash: false

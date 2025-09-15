@@ -8,7 +8,7 @@ A modern, cloud-native car booking system built with microservices architecture,
 - **Backend**: Node.js microservices (Express.js)
 - **Infrastructure**: Amazon EKS with Terraform
 - **Database**: Amazon RDS (MySQL)
-- **CI/CD**: GitHub Actions + ArgoCD (GitOps)
+- **CI/CD**: ArgoCD (GitOps)
 - **Monitoring**: Prometheus + Grafana
 - **Load Balancing**: AWS Application Load Balancer
 
@@ -31,7 +31,7 @@ A modern, cloud-native car booking system built with microservices architecture,
 │   └── overlays/             # Environment overlays (Kustomize)
 ├── frontend/                 # React.js application
 ├── microservices/            # Node.js services
-├── .github/workflows/        # CI/CD pipelines
+├── scripts/                  # Build and deployment scripts
 └── docs/                     # Documentation
 ```
 
@@ -45,26 +45,53 @@ A modern, cloud-native car booking system built with microservices architecture,
 - Docker
 - Node.js 18+
 
-### 1. Deploy Infrastructure
+### 1. Clone and Setup
 
 ```bash
-cd terraform/environments/dev
-terraform init
-terraform plan
-terraform apply
+git clone https://github.com/forevertux/car-booking.git
+cd car-booking
 ```
 
-### 2. Configure kubectl
+### 2. Deploy Infrastructure
 
 ```bash
-aws eks update-kubeconfig --region eu-west-1 --name car-booking-dev
+# Copy and edit variables
+cp infrastructure/environments/dev/terraform.tfvars.example infrastructure/environments/dev/terraform.tfvars
+# Edit terraform.tfvars with your domain name
+
+# Deploy infrastructure
+./scripts/deploy-dev.sh infra
 ```
 
-### 3. Deploy Applications
+### 3. Build and Push Images
 
 ```bash
-# Using ArgoCD (GitOps)
-kubectl apply -f k8s-manifests/argocd/
+# Build all Docker images and push to ECR
+./scripts/build-images.sh
+```
+
+### 4. Setup ArgoCD
+
+```bash
+# Install ArgoCD
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# Setup ArgoCD applications
+kubectl apply -f argocd/
+```
+
+### 5. Access Applications
+
+```bash
+# Get ArgoCD admin password
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+# Port forward ArgoCD UI
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+# Access ArgoCD at https://localhost:8080
+# Username: admin, Password: from above command
 ```
 
 ## 🌐 Live Environments
@@ -108,10 +135,10 @@ kubectl apply -f k8s-manifests/argocd/
 
 ### DevOps
 - **ArgoCD**: GitOps continuous delivery
-- **GitHub Actions**: CI/CD pipelines
-- **Prometheus**: Metrics collection
-- **Grafana**: Observability dashboards
+- **Terraform**: Infrastructure as Code
 - **Kustomize**: Kubernetes configuration management
+- **Docker**: Containerization
+- **ECR**: Container registry
 
 ## 📊 Monitoring & Observability
 
@@ -129,14 +156,14 @@ kubectl apply -f k8s-manifests/argocd/
 - **SSL/TLS**: End-to-end encryption
 - **Security Groups**: Network-level firewall
 
-## 🚀 CI/CD Pipeline
+## 🚀 Deployment Pipeline
 
-1. **Code Push** → GitHub repository
-2. **Build** → Docker images (GitHub Actions)
-3. **Test** → Automated testing
-4. **Push** → ECR registry
-5. **Deploy** → ArgoCD sync (GitOps)
-6. **Monitor** → Prometheus/Grafana
+1. **Infrastructure** → Deploy with Terraform
+2. **Build** → Build Docker images locally
+3. **Push** → Push images to ECR
+4. **GitOps** → ArgoCD monitors repo for changes
+5. **Deploy** → ArgoCD syncs applications automatically
+6. **Monitor** → Built-in Kubernetes monitoring
 
 ## 📝 Documentation
 
